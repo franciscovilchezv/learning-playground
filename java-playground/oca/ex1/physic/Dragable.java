@@ -1,0 +1,5 @@
+package physic;
+
+interface Dragable {
+	
+}

@@ -1,0 +1,96 @@
+Datos Raspberry pi
+> IP static
+
+/etc/network/interfaces
+inet addr:192.168.1.200
+
+Bcast:192.168.1.255  
+Mask:255.255.255.0
+
+Gateway 192.168.1.1
+Destination 192.168.1.0 
+
+ip publica: 
+
+> Start
+
+login: pi
+pass: Puj123
+
+>Configuration
+
+sudo raspi-config
+
+> Internet confguration
+
+sudo ifdown eth0
+sudo ifup eth0
+
+> DNS configuratios
+
+/etc/resolv.conf
+
+nameserver 8.8.8.8
+
+> Internet browser
+
+Raspberry:
+$ lynx
+Ver mi ip:
+$ lynx --dump http://ipecho.net/plain
+MacOS:
+$ curl
+
+> Apache:
+
+sudo service apache2
+
+> FTP
+
+sudo service vsftpd
+
+> Mysql
+
+sudo service mysql
+
+user: root
+pass: raspberry
+
+> Mail
+user: 
+pass: 
+
+Fuente: http://iqjar.com/jar/sending-emails-from-the-raspberry-pi/
+
+> Transfer Files
+
+-- Copiado del archivo local a el servidor:
+scp ruta_del_archivo usuario@ip_del_server:ruta_del_archivo
+
+> Router
+
+nueva ip: 
+link: 
+user: admin
+pass: 
+MAC: 
+
+> Crontab
+
+Listar usuario:
+$ crontab -lu user
+
+Editar usuario
+$ crontab -e user
+
+Borrar el crontab del usuario
+$ crontab -ru user
+
+Fuente: http://voragine.net/weblogs/como-ejecutar-php-periodicamente-con-cron-en-un-servidor-linux
+
+http://blog.desdelinux.net/cron-crontab-explicados/
+
+> Trabajo con imágenes
+
+http://www.howtogeek.com/109369/how-to-quickly-resize-convert-modify-images-from-the-linux-terminal/
+

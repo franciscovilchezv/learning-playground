@@ -1,0 +1,60 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+</div>
+
+<button type="button" mdbBtn color="primary" mdbWavesEffect>Primary</button>
+<button type="button" mdbBtn color="secondary" mdbWavesEffect>Secondary</button>
+<button type="button" mdbBtn color="success" mdbWavesEffect>Success</button>
+<button type="button" mdbBtn color="danger" mdbWavesEffect>Danger</button>
+<button type="button" mdbBtn color="warning" mdbWavesEffect>Warning</button>
+<button type="button" mdbBtn color="info" mdbWavesEffect>Info</button>
+<button type="button" mdbBtn color="light" mdbWavesEffect>Light</button>
+<button type="button" mdbBtn color="dark" mdbWavesEffect>Dark</button>
+<button type="button" mdbBtn color="link">Link</button>
+
+
+<button mdbBtn type="button" gradient="peach" rounded="true" mdbWavesEffect>Peach</button>
+<button mdbBtn type="button" gradient="purple" rounded="true" mdbWavesEffect>Purple</button>
+<button mdbBtn type="button" gradient="blue" rounded="true" mdbWavesEffect>Blue</button>
+<button mdbBtn type="button" gradient="aqua" rounded="true" mdbWavesEffect>Aqua</button>
+
+<mdb-carousel [animation]="'slide'">
+  <mdb-carousel-item>
+    <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(130).jpg" alt="First slide">
+  </mdb-carousel-item>
+  <mdb-carousel-item>
+    <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(129).jpg" alt="Second slide">
+  </mdb-carousel-item>
+  <mdb-carousel-item>
+    <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(70).jpg" alt="Third slide">
+  </mdb-carousel-item>
+</mdb-carousel>
+
+<mdb-card>
+  <!--Card image-->
+  <mdb-card-img src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(97).jpg" alt="Card image cap"></mdb-card-img>
+  <!--Card content-->
+  <mdb-card-body>
+
+    <!--Title-->
+    <mdb-card-title>
+      <h4>Card Title</h4>
+    </mdb-card-title>
+
+    <!--Text-->
+    <mdb-card-text> Some quick example text to build on the card title and make up the bulk of the card's
+      content.
+    </mdb-card-text>
+
+    <a href="#" mdbBtn color="primary" mdbWavesEffect>Button</a>
+  </mdb-card-body>
+</mdb-card>
+
+<a routerLink="">Index</a>
+<a routerLink="home">Home</a>
+
+<router-outlet></router-outlet>

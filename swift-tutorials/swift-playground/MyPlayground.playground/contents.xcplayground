@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' display-mode='raw'>
+    <pages>
+        <page name='Comments'/>
+        <page name='Playground'/>
+        <page name='Challenge Tuples'/>
+        <page name='Challenge Booleans'/>
+        <page name='Challenge While'/>
+        <page name='Challenge For'/>
+        <page name='Challenge Switch'/>
+        <page name='Challenge Functions'/>
+        <page name='Challenge Optionals'/>
+        <page name='Challenge More Optionals'/>
+        <page name='Challenge Arrays'/>
+    </pages>
+</playground>

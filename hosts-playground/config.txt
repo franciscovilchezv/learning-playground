@@ -1,0 +1,29 @@
+
+add the host file compulsory,
+
+If you do not use LittleSnitch HandsOff you will need to add these entries to /private/etc/hosts
+
+before install parallels desktop :
+
+1. open Applications=>Utilities=>Terminal
+2. type : sudo nano /private/etc/hosts
+3. type password :
+4. copy all this text below to the bottom
+
+127.0.0.1 registration.parallels.com
+127.0.0.1 webservices.pdfm10.parallels.com
+127.0.0.1 vl.pdfm10.parallels.com
+127.0.0.1 account.parallels.com
+127.0.0.1 blist.parallels.com
+127.0.0.1 blist.pdfm10.parallels.com
+127.0.0.1 update.parallels.com
+127.0.0.1 gp1.wpc.v2cdn.net
+127.0.0.1 report.parallels.com
+127.0.0.1 01-274b-0023.cdx.cedexis.net
+127.0.0.1 c1016.glblcdn.net
+127.0.0.1 wpc.051c.edgecastcdn.net
+
+6. control - x
+7. y => enter
+
+If you have a older version please delete /Library/Preferences/Parallels/licenses.xml
