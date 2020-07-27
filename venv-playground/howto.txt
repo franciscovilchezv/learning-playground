@@ -1,0 +1,13 @@
+# It will use the same python version that you used to create the environment
+python3 -m venv tutorial-env
+
+
+# Activate
+source tutorial-env/bin/activate
+
+# Deactivate
+deactivate
+
+# unfortunately it does not allow you to manage different python versions,
+# you will need to install the python version that you want in your machine system-wide
+# or use pipenv or pyenv, both install the python interpreters and packages at user (~) level
