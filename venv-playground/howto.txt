@@ -11,3 +11,5 @@ deactivate
 # unfortunately it does not allow you to manage different python versions,
 # you will need to install the python version that you want in your machine system-wide
 # or use pipenv or pyenv, both install the python interpreters and packages at user (~) level
+
+# you can also manage the different python versions in a system-wide level with brew
