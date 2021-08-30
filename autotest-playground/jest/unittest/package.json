@@ -1,0 +1,16 @@
+{
+  "name": "unittest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.15.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^27.1.0"
+  }
+}
