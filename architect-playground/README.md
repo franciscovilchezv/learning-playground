@@ -1,5 +1,9 @@
 # Architech Playground
 
+## Articles
+
+- [https://www.leanix.net/en/wiki/ea/enterprise-architect-vs-solution-architect-vs-technical-architect-whats-the-difference](https://www.leanix.net/en/wiki/ea/enterprise-architect-vs-solution-architect-vs-technical-architect-whats-the-difference)
+
 ## Books
 
 - [Books from Martin Fowler](https://martinfowler.com/books/)
