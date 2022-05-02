@@ -39,4 +39,4 @@
 
 ## Guides
 
-- [https://github.com/wolfejw86/architecture-learning-path](https://github.com/wolfejw86/architecture-learning-path)
+- [Jay's Ultimate Architecture Resources](https://github.com/wolfejw86/architecture-learning-path)
