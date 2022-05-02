@@ -36,3 +36,7 @@
 - [Interview tips 1](https://vm.tiktok.com/ZMLtS8f6y/)
 
 - [Interview tips 2](https://vm.tiktok.com/ZMLtBwyfs/)
+
+## Guides
+
+- [https://github.com/wolfejw86/architecture-learning-path](https://github.com/wolfejw86/architecture-learning-path)
