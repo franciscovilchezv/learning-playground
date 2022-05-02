@@ -2,7 +2,7 @@
 
 ## Articles
 
-- [https://www.leanix.net/en/wiki/ea/enterprise-architect-vs-solution-architect-vs-technical-architect-whats-the-difference](https://www.leanix.net/en/wiki/ea/enterprise-architect-vs-solution-architect-vs-technical-architect-whats-the-difference)
+- [Enterprise Architect vs. Solution Architect vs. Technical Architect](https://www.leanix.net/en/wiki/ea/enterprise-architect-vs-solution-architect-vs-technical-architect-whats-the-difference)
 
 ## Books
 
