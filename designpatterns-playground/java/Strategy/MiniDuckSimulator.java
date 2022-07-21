@@ -1,15 +1,16 @@
 import behavior.fly.FlyRocketPowered;
+import duck.Duck;
 import duck.MallardDuck;
 import duck.ModelDuck;
 
 public class MiniDuckSimulator {
   public static void main(String[] args) {
-    MallardDuck mallardDuck = new MallardDuck();
+    Duck mallardDuck = new MallardDuck();
 
     mallardDuck.performQuack();
     mallardDuck.performFly();
 
-    ModelDuck modelDuck = new ModelDuck();
+    Duck modelDuck = new ModelDuck();
     modelDuck.performQuack();
     modelDuck.performFly();
     modelDuck.setFlyBehavior(new FlyRocketPowered());
