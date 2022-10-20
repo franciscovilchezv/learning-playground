@@ -1,1 +1,2 @@
-[Get started](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
+- [Get started](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
+- [Cheatsheet](https://css-tricks.com/snippets/css/a-guide-to-flexbox/#flexbox-background)
