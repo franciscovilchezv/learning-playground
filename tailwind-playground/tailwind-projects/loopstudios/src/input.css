@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .navbar {
+    @apply px-6 py-12 flex items-center container mx-auto;
+  }
+
+  .navbar > .navbar-style {
+    @apply font-alata font-bold text-white gap-8;
+  }
+
+  .navbar > .navbar-options {
+    @apply flex flex-row py-0 bg-transparent justify-end grow static;
+  }
+
+  .navbar > .navbar-screen {
+    @apply hidden top-0 right-0 left-0 bg-black flex-col py-52 pl-12 text-lg uppercase items-start absolute;
+  }
+
+  .navbar > .navbar-screen-exposed {
+    @apply flex;
+  }
+
+  .btn {
+    @apply hidden md:block border-black border-2 font-alata uppercase px-10 py-2 tracking-widest hover:text-white hover:bg-black duration-200;
+  }
+
+  .btn-link:hover::after {
+    @apply border-opacity-100;
+  }
+
+  .btn-link::after {
+    content: "";
+    @apply block mx-2 border-b border-blue-50 border-opacity-0;
+  }
+}
+
+.hero-background {
+  background-image: url('../images/desktop/image-hero.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}

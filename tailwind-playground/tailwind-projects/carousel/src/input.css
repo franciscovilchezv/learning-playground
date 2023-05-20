@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.carousel {
+  grid-template-columns: 1fr 1fr;;
+  overflow: auto;
+  height: 100%;
+  grid-auto-flow: column;
+}
