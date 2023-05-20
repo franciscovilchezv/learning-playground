@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700&family=Rokkitt:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link href="../dist/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Background -->
+  <div class="bg-rose-50 min-h-screen flex items-center justify-center">
+    <!-- Modal -->
+    <div class="bg-white m-6 rounded-2xl shadow-2xl md:flex md:flex-row relative md:m-0">
+      <!-- Left Panel -->
+      <div class="p-6 md:p-20">
+        <!-- Title -->
+        <h2 class="text-4xl font-bold font-mono mb-5">Log In</h2>
+
+        <!-- Messge -->
+        <p class="font-sans font-light text-gray-600 max-w-sm mb-12">Log in to your account to upload or download
+          pictures, videos or music.</p>
+
+        <!-- Email address -->
+        <input type="text"
+          class="placeholder:font-light placeholder:font-sans p-6 border rounded-md border-gray-300 w-full"
+          placeholder="Enter your email address">
+
+        <!-- Buttons -->
+        <div class="flex flex-col items-center gap-6 mt-6">
+          <a class="hover:underline text-cyan-700 font-thin" href="#">Forgot Password</a>
+
+          <button
+            class="bg-cyan-700 flex justify-center items-center gap-4 px-9 py-6 w-full rounded-md hover:-translate-y-0.5 duration-150 shadow-lg hover:shadow-lg shadow-cyan-100 hover:bg-opacity-90">
+            <div class="text-white font-sans font-bold">Next</div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff"
+              fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <line x1="13" y1="18" x2="19" y2="12"></line>
+              <line x1="13" y1="6" x2="19" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+
+
+        <!-- HR -->
+        <div class="border-b mt-12 border-b-gray-300"></div>
+
+        <!-- Other login message -->
+        <p class="text-center text-sm font-thin text-gray-400 py-6">or log in with</p>
+
+        <!-- Other login buttons -->
+        <div class="flex flex-col gap-6">
+          <button
+            class="flex items-center justify-center gap-3 border py-2 border-gray-300 rounded shadow-sm hover:shadow-lg hover:-translate-y-0.5 duration-150">
+            <img class="w-9" src="../images/facebook.png">
+            <span class="font-thin">Facebook</span>
+          </button>
+
+          <button
+            class="flex items-center justify-center gap-3 border py-2 border-gray-300 rounded shadow-sm hover:shadow-lg hover:-translate-y-0.5 duration-150">
+            <img class="w-9" src="../images/google.png">
+            <span class="font-thin">Google</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="md:flex hidden w-[430px]">
+        <img src="../images/image.jpg">
+      </div>
+
+      <div class="absolute right-4 top-5 bg-gray-200 rounded-full w-10 h-10 flex justify-center items-center hover:cursor-pointer duration-150 hover:-translate-y-0.5 md:bg-white group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black group-hover:text-gray-600" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
