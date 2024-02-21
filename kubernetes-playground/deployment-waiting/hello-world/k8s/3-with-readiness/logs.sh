@@ -1,0 +1,1 @@
+kubectl logs --follow  --all-containers deployments/hello-world-sleep-readi-deployment

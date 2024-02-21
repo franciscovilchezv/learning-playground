@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-world-sleep-app
+  labels:
+    name: hello-world-sleep-app
+    app: hello-world-sleep-app
+spec:
+  containers:
+  - name: hello-world-sleep-container
+    image: franciscovilchezv/hello-world:sleep-0.0.1
+    ports:
+      - containerPort: 80
