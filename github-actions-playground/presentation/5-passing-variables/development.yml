@@ -1,0 +1,136 @@
+name: Development CI/CD
+on: [push]
+  # push:
+  #   branches: [ development ]
+jobs:
+  integration-tests:
+    name: Integration tests
+    uses: peruescafe/marketcafe-devops/.github/workflows/integration-test.yml@main
+    with:
+      ENVIRONMENT: test
+    secrets: inherit
+  build:
+    name: Application build
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Build and push
+        id: build-and-push
+        uses: docker/build-push-action@v5
+        env:
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        with:
+          context: .
+          platforms: linux/arm64
+          push: true
+          provenance: false
+          tags: ${{env.ECR_REGISTRY}}/${{env.ECR_REPOSITORY}}:${{env.IMAGE_TAG}}
+  run-migrations:
+    name: Running prisma migrations
+    runs-on: ubuntu-latest
+    environment: development
+    needs: build
+    env:
+      HOSTNAME: ${{ vars.EC2_IP_ADDRESS }}
+      USER_NAME: ${{secrets.EC2_USERNAME}}
+      ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+      ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+      IMAGE_TAG: ${{ github.sha }}
+    steps:
+      - name: Prepare EC2 SSH credentials
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key;
+          echo "ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}";
+      - name: Login to ECR on EC2
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+      - name: Run migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "
+            docker run \
+              -e DATABASE_URL=${DATABASE_URL} \
+              $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+              npm run prisma:deploy
+          "
+  deploy-app:
+    name: Application deployment
+    needs: run-migrations
+    uses: peruescafe/marketcafe-devops/.github/workflows/deploy-on-ec2.yml@main
+    secrets: inherit
+    with:
+      ENVIRONMENT: development
+      IMAGE_TAG: ${{ github.sha }}
+      EXECUTION_COMMAND: 'npm run start:prod'
+  deploy-prisma:
+    name: Prisma deployment
+    runs-on: ubuntu-latest
+    environment: development
+    needs: deploy-app
+    env:
+      HOSTNAME: ${{ vars.EC2_IP_ADDRESS }}
+      USER_NAME: ${{ secrets.EC2_USERNAME }}
+      ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+      ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+      IMAGE_TAG: ${{ github.sha }}
+    steps:
+      - name: Prepare EC2 SSH credentials
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key;
+          echo "ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}";
+      - name: Login to ECR on EC2
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+      - name: Stop running app
+        env:
+          NODE_ENV: ${{ vars.NODE_ENV }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "docker stop ${ECR_REPOSITORY}-prisma-studio-${NODE_ENV} || true"
+      - name: Clean unused containers
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "docker system prune -f"
+      - name: Clean unused images
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "docker image prune -af"
+      - name: Start prisma studio
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PRISMA_STUDIO_PORT: ${{ vars.PRISMA_STUDIO_PORT }}
+          NODE_ENV: ${{ vars.NODE_ENV }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "
+            docker run \
+              --name ${ECR_REPOSITORY}-prisma-studio-${NODE_ENV} \
+              -e DATABASE_URL=${DATABASE_URL} \
+              -p ${PRISMA_STUDIO_PORT}:${PRISMA_STUDIO_PORT} \
+              -d $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+              npm run prisma:studio -- -p $PRISMA_STUDIO_PORT
+          "

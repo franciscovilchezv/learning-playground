@@ -1,0 +1,28 @@
+name: Pull Requests CI/CD
+on: [ pull_request ]
+jobs:
+  lint-check:
+    name: Linting verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: action 1
+        uses: peruescafe/marketcafe-devops/.github/actions/action1@main
+      - name: action 2
+        uses: peruescafe/marketcafe-devops/.github/actions/action2@main
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm ci
+      - name: Test Linting
+        run: npm run lint:check
+  integration-tests:
+    name: Integration tests
+    uses: peruescafe/marketcafe-devops/.github/workflows/integration-test.yml@main
+    needs: lint-check
+    with:
+      ENVIRONMENT: test
+    secrets: inherit

@@ -1,0 +1,21 @@
+name: Pull Requests CI/CD
+on:
+  [ pull_request ]
+jobs:
+  lint-check:
+    name: Linting verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Linting
+        uses: peruescafe/marketcafe-devops/.github/actions/node-linting@main
+        with:
+          node-version: '18'
+  integration-tests:
+    name: Integration tests
+    uses: peruescafe/marketcafe-devops/.github/workflows/integration-test.yml@main
+    needs: lint-check
+    with:
+      ENVIRONMENT: test
+    secrets: inherit
