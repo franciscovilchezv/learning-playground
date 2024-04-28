@@ -1,0 +1,112 @@
+on:
+  workflow_call:
+    inputs:
+      IMAGE_TAG:
+        required: true
+        type: string
+      ENVIRONMENT:
+        required: true
+        type: string
+      APP_TYPE:
+        required: true
+        description: Can be 'node_app', 'prisma_app', 'prisma_migration'
+        type: string
+    secrets:
+      EC2_USERNAME:
+        required: true
+      ECR_REGISTRY:
+        required: true
+      SSH_KEY:
+        required: true
+      AWS_ACCOUNT_ID:
+        required: true
+      DATABASE_URL:
+        required: true
+      EC2_IP_ADDRESS:
+        required: true
+      ECR_REPOSITORY:
+        required: true
+      AWS_REGION:
+        required: true
+      NODE_ENV:
+        required: true
+      APP_PORT:
+        required: false
+      PRISMA_STUDIO_PORT:
+        required: false
+        
+env:
+  HOSTNAME: ${{ secrets.EC2_IP_ADDRESS }}
+  USER_NAME: ${{secrets.EC2_USERNAME}}
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  NODE_ENV: ${{ secrets.NODE_ENV }}
+  IMAGE_TAG: ${{ inputs.IMAGE_TAG }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  APP_TYPE: ${{inputs.APP_TYPE}}
+jobs:
+  test:
+    name: Run container on EC2
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.ENVIRONMENT }}
+    steps:
+      - name: Prepare EC2 SSH credentials
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key;
+      - name: Login to ECR on EC2
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+      - name: Stop running app
+        if: ${{inputs.APP_TYPE == 'prisma_app' || inputs.APP_TYPE == 'node_app'}}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "docker stop ${ECR_REPOSITORY}-${APP_TYPE}-${NODE_ENV} || true"
+      - name: Clean unused containers
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "docker system prune -f"
+      - name: Clean unused images
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "docker image prune -af"
+      - name: Start node app
+        if: ${{inputs.APP_TYPE == 'node_app'}}
+        env:
+          APP_PORT: ${{ secrets.APP_PORT }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "
+            docker run \
+              --name ${ECR_REPOSITORY}-${APP_TYPE}-${NODE_ENV} \
+              -e DATABASE_URL=${DATABASE_URL} \
+              -e APP_PORT=${APP_PORT} \
+              -p ${APP_PORT}:${APP_PORT} \
+              -d $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+              npm run start:prod
+          "
+      - name: Start prisma studio
+        if: ${{inputs.APP_TYPE == 'prisma_app'}}
+        env:
+          PRISMA_STUDIO_PORT: ${{ secrets.PRISMA_STUDIO_PORT }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "
+          docker run \
+            --name ${ECR_REPOSITORY}-${APP_TYPE}-${NODE_ENV} \
+            -e DATABASE_URL=${DATABASE_URL} \
+            -p ${PRISMA_STUDIO_PORT}:${PRISMA_STUDIO_PORT} \
+            -d $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            npm run prisma:studio -- -p $PRISMA_STUDIO_PORT
+          "
+      - name: Run prisma migrations
+        if: ${{inputs.APP_TYPE == 'prisma_migration'}}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "
+          docker run \
+            -e DATABASE_URL=${DATABASE_URL} \
+            $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            npm run prisma:deploy
+          "
+
+
+

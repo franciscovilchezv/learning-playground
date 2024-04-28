@@ -1,0 +1,45 @@
+name: Production CI/CD
+on:
+  push:
+    branches: [ main ]
+jobs:
+  integration-tests:
+    name: PROD - Integration tests
+    uses: peruescafe/marketcafe-devops/.github/workflows/integration-test.yml@main
+    with:
+      ENVIRONMENT: test
+    secrets: inherit
+  build:
+    name: PROD - Application build
+    uses: peruescafe/marketcafe-devops/.github/workflows/arm-build-to-ecr.yml@main
+    with:
+      ENVIRONMENT: production
+    secrets: inherit
+  run-migrations:
+    name: PROD - Run migrations
+    needs: build
+    uses: peruescafe/marketcafe-devops/.github/workflows/run-container-on-ec2.yml@main
+    secrets: inherit
+    with:
+      ENVIRONMENT: production
+      IMAGE_TAG: ${{ github.sha }}
+      APP_TYPE: prisma_migration
+  deploy-app:
+    name: PROD - Application deployment
+    needs: run-migrations
+    uses: peruescafe/marketcafe-devops/.github/workflows/run-container-on-ec2.yml@main
+    secrets: inherit
+    with:
+      ENVIRONMENT: production
+      IMAGE_TAG: ${{ github.sha }}
+      APP_TYPE: node_app
+  deploy-prisma:
+    name: PROD - Deploy prisma studio
+    needs: deploy-app
+    uses: peruescafe/marketcafe-devops/.github/workflows/run-container-on-ec2.yml@main
+    secrets: inherit
+    with:
+      ENVIRONMENT: production
+      IMAGE_TAG: ${{ github.sha }}
+      APP_TYPE: prisma_app
+    

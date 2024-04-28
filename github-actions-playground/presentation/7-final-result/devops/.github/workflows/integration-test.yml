@@ -1,0 +1,22 @@
+on: 
+  workflow_call:
+    inputs:
+      ENVIRONMENT:
+        required: true
+        type: string
+    secrets:
+      DATABASE_URL:
+        required: true
+
+jobs:
+  integration-test:
+    name: Docker Compose Integration Tests
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.ENVIRONMENT }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Test docker-compose
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: docker-compose -f docker-compose-test.yml up --exit-code-from integration-test
