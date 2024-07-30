@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.nav-link {
+  @apply bg-lime-800 px-4 py-2 rounded-xl text-white border border-lime-800 transition duration-200;
+}
+
+.nav-link.active {
+  @apply bg-lime-600 border-lime-600;
+}
+
+.nav-link:hover {
+  @apply bg-lime-600 border-lime-600;
+}
+
+.btn-primary {
+  @apply bg-orange-800 px-4 py-2 rounded-xl text-white border border-orange-800 transition duration-500;
+}
+
+.btn-primary:hover {
+  @apply bg-white text-orange-800 border border-orange-800;
+}
