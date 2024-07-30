@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components{
+  .btn {
+    @apply px-4 py-2
+  }
+
+  .btn-primary {
+    @apply border border-slate-800 rounded-lg text-gray-100 bg-slate-800 transition duration-200
+  }
+
+  .btn-primary:hover {
+    @apply border px-4 py-2 rounded-lg text-gray-900 bg-white
+  }
+  
+  .form-control {
+    @apply flex space-x-4 py-4 justify-center;
+  }
+}
