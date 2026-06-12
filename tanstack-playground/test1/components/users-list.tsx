@@ -15,10 +15,11 @@ export default function UsersListComponent() {
   const { data, isPending, error } = useQuery({
     queryKey: ["authors"],
     queryFn: async () => {
+      console.log("inFN")
       const supabase = createClient();
       const { data } = await supabase.from("Author").select();
-      console.log(data);
-      console.log(data?.[0]);
+      // console.log(data);
+      // console.log(data?.[0]);
       return data;
     },
   });
